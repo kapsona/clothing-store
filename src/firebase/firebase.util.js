@@ -10,7 +10,7 @@ const config = {
   storageBucket: "clothing-store-d76ad.appspot.com",
   messagingSenderId: "701644088275",
   appId: "1:701644088275:web:ad8729c7f9d9e3527ec526",
-  measurementId: "G-CVV76DMG04"
+  measurementId: "G-CVV76DMG04",
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -27,7 +27,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        ...additionalData
+        ...additionalData,
       });
     } catch (error) {
       console.log("error creating user ", error.message);
@@ -37,6 +37,34 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 firebase.initializeApp(config);
+
+export const addCollectionAndItems = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, collections) => {
+    accumulator[collections.title.toLowerCase()] = collections;
+    return accumulator;
+  }, {});
+};
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
