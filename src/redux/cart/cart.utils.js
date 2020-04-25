@@ -1,5 +1,3 @@
-import CartActionTypes from "./cart.types";
-
 export const addItemToCart = (cartItems, cartItemToAdd) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === cartItemToAdd.id
@@ -12,10 +10,10 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
         : cartItem
     );
   }
+
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
 
-/// Remove cart item from cart
 export const removeItemFromCart = (cartItems, cartItemToRemove) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === cartItemToRemove.id
