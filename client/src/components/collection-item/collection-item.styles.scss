@@ -33,6 +33,23 @@
     }
   }
 
+  @media screen and (max-width: 800px) {
+    width: 40vw;
+
+    &:hover {
+      .image {
+        opacity: unset;
+      }
+
+      .custom-button {
+        opacity: 0.9;
+        display: block;
+        min-width: unset;
+        padding: 0px 10px;
+      }
+    }
+  }
+
   .collection-footer {
     width: 100%;
     height: 5%;
